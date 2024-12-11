@@ -70,7 +70,7 @@ export default function Dashboard({ navigation }) {
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNavigation}>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/home')}>
           <Ionicons name="cube-outline" size={24} color="#8D8DA6" />
           <Text style={[styles.navText, { color: "#8D8DA6" }]}>Dashboard</Text>
         </TouchableOpacity>
