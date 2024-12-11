@@ -21,7 +21,7 @@ export default function Dashboard({ navigation }) {
       {/* Content */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.content}>
-          <TouchableOpacity style={styles.container1} onPress={() => router.push('/schedule')}>
+          <TouchableOpacity style={styles.container1} onPress={() => router.push('/assignment')}>
             <Text style={styles.titleText3}>Current Questionnaire</Text>
             <View style={styles.container2}>
               <View style={styles.textContainer}>
