@@ -36,27 +36,35 @@ export default function Dashboard({ navigation }) {
 
       {/* Content */}
       <View style={styles.content}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputText}
-            placeholder="Search assignments"
-            value={searchQuery}
-            onChangeText={setSearchQuery} // Update search query state
-          />
-        </View>
+      <View style={styles.inputContainer}>
+  <TextInput
+    style={styles.inputText}
+    placeholder="Search assignments"
+    placeholderTextColor="#888" // Optional: make placeholder more visible
+    value={searchQuery}
+    onChangeText={text => setSearchQuery(text)}
+    returnKeyType="search"
+    autoCorrect={false}
+    autoCapitalize="none"
+  />
+</View>
 
         <View style={styles.container1}>
-          {filteredAssignments.map((assignment, index) => (
-            <View key={index} style={styles.container2}>
-              <View style={styles.textContainer}>
-                <Text style={styles.Text1}>{assignment.title}</Text>
-                <Text style={styles.Text2}>Due: {assignment.due}</Text> 
+          {filteredAssignments.length === 0 && searchQuery !== '' ? (
+            <Text style={styles.noResultsText}>No results found</Text>
+          ) : (
+            filteredAssignments.map((assignment, index) => (
+              <View key={index} style={styles.container2}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.Text1}>{assignment.title}</Text>
+                  <Text style={styles.Text2}>Due: {assignment.due}</Text> 
+                </View>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>{assignment.status}</Text>
+                </View>
               </View>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>{assignment.status}</Text>
-              </View>
-            </View>
-          ))}
+            ))
+          )}
         </View>
       </View>
 
@@ -100,11 +108,13 @@ const styles = StyleSheet.create({
     marginHorizontal: '5%',
     marginTop: '40%', 
     marginLeft: '0%',
+    minHeight: 50, // Add a minimum height to prevent shrinking
   },
   inputText: {
     fontSize: 16,
     fontWeight: '300',
     width: '100%',
+    color: '#000', // Ensure text is visible
   },
   titleContainer: {
     justifyContent: 'center',
@@ -207,6 +217,12 @@ const styles = StyleSheet.create({
   personIcon: {
     marginRight: 'auto',
     paddingTop: '12%',
+  },
+  noResultsText: {
+    fontSize: 16,
+    color: '#FF0000',
+    textAlign: 'center',
+    marginTop: 20,
   },
   bottomNavigation: {
     position: 'absolute',
