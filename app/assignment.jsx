@@ -15,12 +15,12 @@ export default function Dashboard() {
       status: 'In Progress',
       details: ['Class A', '100% Submitted', 'Status: Reviewed'],
       moreInfo: [
-        'Class A Students: Ryan, Ben, Ruth, Emily, John \n',
+        'Yet to submit: Nil \n',
         'Hardest questions: Q1, Q3 \n',
         'Topics to cover: Calculus',
       ],
       moreInfoB: [
-        'Class B Students: James, Sarah, Alex, Laura \n',
+        'Yet to submit: James, Sarah, Alex, Laura \n',
         'Hardest questions: Q2, Q4 \n',
         'Topics to cover: Algebra',
       ],

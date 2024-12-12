@@ -89,10 +89,6 @@ export default function Dashboard({ navigation }) {
           <Ionicons name="document-text" size={24} color="#8D8DA6" />
           <Text style={styles.navText}>Questionnaire</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/manage')}>
-          <Ionicons name="people-outline" size={24} color="#8D8DA6" />
-          <Text style={[styles.navText, { color: "#8D8DA6" }]}>Manage</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
           <Ionicons name="clipboard-outline" size={24} color="#0300A2" />
           <Text style={[styles.navText, { color: "#0300A2" }]}>Report</Text>

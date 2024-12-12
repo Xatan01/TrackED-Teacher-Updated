@@ -76,10 +76,6 @@ export default function Dashboard({ navigation }) {
           <Ionicons name="document-text" size={24} color="#0300A2" />
           <Text style={[styles.navText, { color: "#0300A2" }]}>Questionnaire</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/manage')}>
-          <Ionicons name="people-outline" size={24} color="#8D8DA6" />
-          <Text style={styles.navText}>Manage</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
           <Ionicons name="clipboard-outline" size={24} color="#8D8DA6" />
           <Text style={styles.navText}>Report</Text>
@@ -105,7 +101,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginHorizontal: '5%',
     marginTop: '40%', 
-    marginLeft: '0%',
+    marginLeft: '5%',
     minHeight: 50, // Add a minimum height to prevent shrinking
   },
   inputText: {
@@ -160,7 +156,7 @@ const styles = StyleSheet.create({
   },
   container1: {
     paddingTop: '5%',
-    marginLeft: '2%' ,
+    marginLeft: '5%' ,
     flexDirection: 'column',
     marginBottom: '-30%',
   },
