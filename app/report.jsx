@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 
 export default function Dashboard({ navigation }) {
   const router = useRouter(); 
+  
   return (
     <View style={styles.container}>
       {/* Top panel with title container */}
@@ -12,50 +13,75 @@ export default function Dashboard({ navigation }) {
         <Ionicons name="person-circle-outline" size={50} color="#153B78" style={styles.personIcon} />
         <View style={styles.titleTextContainer}>
           <Text style={styles.titleText}>Welcome,</Text>
-          <Text style={styles.titleText2}>Timmy</Text>
+          <Text style={styles.titleText2}>Jane</Text>
         </View>
         <Ionicons name="notifications-outline" size={24} color="#153B78" style={styles.bellIcon} />
       </View>
       {/* Content */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.content}>
-        <Text style={styles.titleText3}>Current Questionnaire</Text>
-
-        <View style={styles.container1}>
-            <TouchableOpacity style={styles.container2} onPress={()=> router.push('/chat')}>
+        <Text style={styles.titleText3}>Assignment Report</Text>
+        <View style={styles.container2}>
               <View style={styles.textContainer}>
-                <Text style={styles.Text1}>Ms Jane Doe</Text>
-                <Text style={styles.Text2}>MATH, Staff room 1</Text> 
-              </View>
-              <TouchableOpacity style={styles.button} >
-                <Text style={styles.buttonText}>jane@sch.com</Text>
-              </TouchableOpacity>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.container2} onPress={()=> router.push('/chat2')}>
-              <View style={styles.textContainer}>
-                <Text style={styles.Text1}>Mr Smith</Text>
-                <Text style={styles.Text2}>ENGLISH, Staff room 2</Text> 
+                <Text style={styles.Text1}>Math Assignment 2</Text>
+                <Text style={styles.Text2}>Due: Tomorrow 2PM</Text>
               </View>
               <View style={styles.button}>
-                <Text style={styles.buttonText}>smith@sch.com</Text>
+                <Text style={styles.buttonText}>In Progress</Text>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.container2} onPress={()=> router.push('/chat3')}>
-              <View style={styles.textContainer}>
-                <Text style={styles.Text1}>Mr Tan</Text>
-                <Text style={styles.Text2}>BIOLOGY, Staff room 3</Text> 
-              </View>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>tan@sch.com</Text>
-              </View>
-            </TouchableOpacity>
           </View>
-
           </View>
+          <View style={styles.container3}>
+                <View style={styles.container4}>
+                    <Text style={[styles.ques,{fontWeight:'600'}]}>Question 1</Text>
+                    <View style={styles.tagcontainer}>
+                        <Text style={styles.tag}>Calculus</Text>
+                    </View>
+                </View>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Statistics:</Text>
+                <Text style={styles.res}> 90% of students got it right </Text>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Analysis:</Text>
+                <Text style={styles.res}> Students are generally able to solve this problem  </Text>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Questionnaire feedback:</Text>
+                <Text style={styles.res}> "I think this is straightforward" - Paul, Class A </Text>
+                </View>
+                <View style={styles.container3}>
+                <View style={styles.container4}>
+                    <Text style={[styles.ques,{fontWeight:'600'}]}>Question 2</Text>
+                    <View style={styles.tagcontainer}>
+                        <Text style={styles.tag}>Calculus</Text>
+                    </View>
+                </View>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Statistics:</Text>
+                <Text style={styles.res}> 70% of students got it right </Text>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Analysis:</Text>
+                <Text style={styles.res}> Students are generally able to solve this problem, the ones that got it wrong were careless and forgot to check for other possible answers  </Text>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Questionnaire feedback:</Text>
+                <Text style={styles.res}> "This question is tricky but managable" - Chris, Class B </Text>
+                <Text style={styles.res}> "Please go through this in class" - Melody, Class A </Text>
+                </View>
+                <View style={styles.container3}>
+                <View style={styles.container4}>
+                    <Text style={[styles.ques,{fontWeight:'600'}]}>Question 3</Text>
+                    <View style={styles.tagcontainer}>
+                        <Text style={styles.tag}>Calculus</Text>
+                    </View>
+                    <View style={styles.tagcontainer1}>
+                        <Text style={styles.tag1}>Hardest</Text>
+                    </View>
+                </View>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Statistics:</Text>
+                <Text style={styles.res}> 30% of students got it right </Text>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Analysis:</Text>
+                <Text style={styles.res}> Students are generally unable to solve this question. The question has multiple parts and require the knowledge of various concepts regarding calculus like derivatives, second derivatives and integration. More time should be spent eexplaining these concepts.  </Text>
+                <Text style={[styles.res,{fontWeight:'600'}]}>Questionnaire feedback:</Text>
+                <Text style={styles.res}> "I don't understand this question" - Darren, Class B </Text>
+                <Text style={styles.res}> "Why is the answer 2X and not 5X?" - Jason, Class A </Text>
+                </View>
       </ScrollView>
       {/* Bottom Navigation */}
       <View style={styles.bottomNavigation}>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem}onPress={() => router.push('/home')}>
           <Ionicons name="cube-outline" size={24} color="#8D8DA6" />
           <Text style={[styles.navText, { color: "#8D8DA6" }]}>Dashboard</Text>
         </TouchableOpacity>
@@ -64,12 +90,12 @@ export default function Dashboard({ navigation }) {
           <Text style={styles.navText}>Questionnaire</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/manage')}>
-          <Ionicons name="people-outline" size={24} color="#0300A2" />
-          <Text style={[styles.navText, { color: "#0300A2" }]}>Manage</Text>
+          <Ionicons name="people-outline" size={24} color="#8D8DA6" />
+          <Text style={[styles.navText, { color: "#8D8DA6" }]}>Manage</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
-          <Ionicons name="clipboard-outline" size={24} color="#8D8DA6" />
-          <Text style={styles.navText}>Report</Text>
+          <Ionicons name="clipboard-outline" size={24} color="#0300A2" />
+          <Text style={[styles.navText, { color: "#0300A2" }]}>Report</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -124,7 +150,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#0300A2', // Blue border color
+    borderColor: '#0A0932', // Blue border color
     borderWidth: 2,
     borderRadius: 25,
     paddingVertical: 15,
@@ -178,12 +204,13 @@ const styles = StyleSheet.create({
     color: '#7C7C7C',
     paddingTop: '12%',
   },
-  titleText2: {
+  titleText4: {
     fontSize: 16,
     fontFamily: 'Roboto',
     fontWeight: '500', 
     color: '#060527',
-    paddingTop: 3,    
+    marginLeft: '5%',
+    paddingTop:30,    
   },
 
   scrollViewContent:{
@@ -199,7 +226,7 @@ const styles = StyleSheet.create({
   },
   container2:{
     borderRadius: 35,
-    backgroundColor:'#193F7B',
+    backgroundColor:'#0A0932',
     width: '90%',
     paddingVertical: '10%', // Adjust the padding for better spacing
     marginTop:13,
@@ -285,5 +312,61 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     color: '#060527',
     marginTop: 150,
+  },
+  container3: {
+    marginTop: '5%',
+    flexDirection: 'column',
+    marginLeft: '5%',
+  },
+  container4: {
+    flexDirection: 'row',
+  },
+  res: {
+    color: '#060527',
+    fontFamily: 'Roboto',
+    fontSize: 16,
+    fontWeight: '250',
+    marginTop: 5,
+    marginRight: 25,
+  },
+  link: {
+    fontSize: 16,
+    color: '#0000FF', 
+    textDecorationLine: 'underline',
+  },
+  ques: {
+    color: '#060527',
+    fontFamily: 'Roboto',
+    fontSize: 20,
+    fontWeight: '250',
+    marginTop: '2%',
+  },
+  tag: {
+    fontFamily: 'Roboto',
+    fontSize: 14,
+    fontWeight: '230',
+    color: '#ffffff',
+  },
+  tag1: {
+    fontFamily: 'Roboto',
+    fontSize: 14,
+    fontWeight: '230',
+    color: '#ffffff',
+  },
+  tagcontainer1: {
+    backgroundColor: '#FF0000',
+    borderRadius: 20,
+    marginLeft: '10%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginTop: '2%',
+  },
+  tagcontainer: {
+    backgroundColor: '#4450A1',
+    borderRadius: 20,
+    marginLeft: '10%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginTop: '2%',
   },
 });
