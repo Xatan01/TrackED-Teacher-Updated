@@ -6,11 +6,13 @@ import { useRouter } from 'expo-router';
 
 export default function Dashboard() {
   const router = useRouter();
+  const [editable, setEditable] = useState(false);
+const [response, setResponse] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [questions, setQuestions] = useState([
-    { id: 1, text: "Did you get the correct answer?", type: 'scale', scale: 3, editable: false },
-    { id: 2, text: "Was the question too hard?", type: 'scale', scale: 2, editable: false },
-    { id: 3, text: "Did the examples help?", type: 'scale', scale: 4, editable: false },
+    { id: 1, text: "Question 1", type: 'scale', scale: 3, editable: false },
+    { id: 2, text: "Question 2", type: 'scale', scale: 2, editable: false },
+    { id: 3, text: "Question 3", type: 'scale', scale: 4, editable: false },
     { id: 4, text: "Explain how you solved question 3?", type: 'text', value: '', editable: false },
   ]);
 
@@ -88,6 +90,35 @@ export default function Dashboard() {
             </View>
           ))}
         </View>
+        {/* Instruction Box */}
+        <View style={styles.instructionBox}>
+  <Text style={styles.instructionText}>
+    Key In Instructions for the Questionnaire
+  </Text>
+  <View style={styles.editableResponseBox}>
+    {editable ? (
+      <TextInput
+        style={styles.textInput}
+        value={response}
+        onChangeText={setResponse}
+        placeholder="Type your response here..."
+      />
+    ) : (
+      <Text style={styles.responseText}>
+        {response || 'Click the pencil to edit your response.'}
+      </Text>
+    )}
+    <TouchableOpacity style={styles.iconContainer} onPress={() => setEditable(!editable)}>
+      <Ionicons
+        name={editable ? 'checkmark-outline' : 'pencil-outline'}
+        size={20}
+        color="#153B78"
+      />
+    </TouchableOpacity>
+  </View>
+</View>
+
+
 
         {/* Questionnaire Section */}
         <View style={styles.questionnaireContainer}>
@@ -158,7 +189,7 @@ export default function Dashboard() {
           ))}
 
           <TouchableOpacity style={styles.confirmButton}onPress={() => router.push('/questionnaire')}>
-            <Text style={styles.confirmButtonText}>Confirmed Changes</Text>
+            <Text style={styles.confirmButtonText}>Confirm Changes</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -172,10 +203,6 @@ export default function Dashboard() {
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/questionnaire')}>
           <Ionicons name="document-text" size={24} color="#0300A2" />
           <Text style={[styles.navText, { color: "#0300A2" }]}>Questionnaire</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/manage')}>
-          <Ionicons name="people-outline" size={24} color="#8D8DA6" />
-          <Text style={styles.navText}>Manage</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
           <Ionicons name="clipboard-outline" size={24} color="#8D8DA6" />
@@ -268,10 +295,10 @@ const styles = StyleSheet.create({
           marginBottom: 10, // Reduced negative margin
         },
         container2: {
-          borderRadius: 15, // Reduced border radius for a more modern look
+          borderRadius: 30, // Reduced border radius for a more modern look
           backgroundColor: '#193F7B',
           width: '100%', // Full width within the container
-          paddingVertical: 15, // Reduced vertical padding
+          paddingVertical: 30, // Reduced vertical padding
           marginTop: 13,
           flexDirection: 'row',
           alignItems: 'center', // Centered alignment
@@ -423,4 +450,47 @@ const styles = StyleSheet.create({
             minHeight: 100, // Increased height to make it more textarea-like
             textAlignVertical: 'top', // Aligns text to the top for multiline input
           },
+         instructionBox: {
+  backgroundColor: '#FFFFFF',
+  borderWidth: 1,
+  borderColor: '#D1D9E6',
+  borderRadius: 8,
+  padding: 10,
+  marginHorizontal: '7%',
+  marginTop: 10,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 3,
+},
+instructionText: {
+  fontSize: 14,
+  color: '#153B78',
+  fontWeight: '500',
+  marginBottom: 10,
+},
+editableResponseBox: {
+  backgroundColor: '#F8FAFF',
+  borderWidth: 1,
+  borderColor: '#D1D9E6',
+  borderRadius: 6,
+  padding: 10,
+  minHeight: 50,
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+textInput: {
+  flex: 1,
+  fontSize: 14,
+  color: '#153B78',
+  paddingVertical: 0,
+},
+iconContainer: {
+  marginLeft: 10,
+},
+
+          
+          
+          
       });

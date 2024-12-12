@@ -64,6 +64,7 @@ export default function Dashboard() {
               <View style={styles.detailsContainer}>
                 {assignment.details.map((detail, detailIndex) => (
                   <View key={detailIndex}>
+
                     <Text
                       style={[
                         styles.detailText,
@@ -93,7 +94,8 @@ export default function Dashboard() {
                     )}
                   </View>
                 ))}
-                <Text style={[styles.detailText, styles.boldText]}>
+
+                <Text style={[styles.detailText, styles.boldText,{marginTop:40}]}>
                   Class B
                   <TouchableOpacity onPress={() => handleToggleExpandB(index)}>
                     <Ionicons
@@ -104,10 +106,9 @@ export default function Dashboard() {
                     />
                   </TouchableOpacity>
                 </Text>
-                {/* Display status below Class B */}
-                {/* Display status below Class B */}
-              <Text style={[styles.detailText, styles.greyedText]}>100% Submitted</Text>
-              <Text style={styles.detailText}>Status: Reviewed</Text>
+
+              <Text style={[styles.detailText, styles.greyedText]}>80% Submitted</Text>
+              <Text style={styles.detailText}>Status: Reviewing on Monday</Text>
 
 
                 {expandedB === index && (
@@ -133,10 +134,6 @@ export default function Dashboard() {
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/questionnaire')}>
           <Ionicons name="document-text" size={24} color="#0300A2" />
           <Text style={[styles.navText, { color: "#0300A2" }]}>Questionnaire</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/manage')}>
-          <Ionicons name="people-outline" size={24} color="#8D8DA6" />
-          <Text style={styles.navText}>Manage</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
           <Ionicons name="clipboard-outline" size={24} color="#8D8DA6" />
@@ -238,9 +235,45 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     color: '#8D8DA6',
   },
-  detailsContainer: {
+  classSection: {
+    marginBottom: 15,
+    padding: 10,
+    backgroundColor: '#F9F9F9',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  boldText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#193F7B',
+  },
+  expandedContainer: {
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderRadius: 8,
     marginTop: 10,
+    padding: 10,
+  },
+  expandedText: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 5,
+  },
+  chevronIcon: {
+    marginLeft: 10,
+  },
+  
+  detailsContainer: {
+    marginTop: 40,
     marginLeft: '5%',
+  },
+  textContainer4: {
+    backgroundColor:'lightblue'
   },
   detailText: {
     fontSize: 16,

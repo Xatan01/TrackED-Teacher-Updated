@@ -1,14 +1,28 @@
-import React , {useState} from 'react';
-import { View, Text, StyleSheet, Modal,TouchableOpacity, Image, ScrollView, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { useRouter } from 'expo-router';
 
 export default function Dashboard({ navigation }) {
-  const router = useRouter(); 
-  
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const assignments = [
+    { title: 'Math Assignment 1', due: '10/12/2024 2PM', status: 'Completed' },
+  ];
+  const statusColors = {
+    Completed: 'lightblue', 
+    'In Progress': 'white', 
+    Unreleased: '#f5f5dc', 
+  };
+
+  const filteredAssignments = assignments.filter(assignment =>
+    assignment.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-      {/* Top panel with title container */}
+      {/* Top panel */}
       <View style={styles.titleContainer}>
         <Ionicons name="person-circle-outline" size={50} color="#153B78" style={styles.personIcon} />
         <View style={styles.titleTextContainer}>
@@ -17,77 +31,56 @@ export default function Dashboard({ navigation }) {
         </View>
         <Ionicons name="notifications-outline" size={24} color="#153B78" style={styles.bellIcon} />
       </View>
-      {/* Content */}
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.content}>
-        <Text style={styles.titleText3}>Assignment Report</Text>
-        <View style={styles.container2}>
+
+      {/* Search bar */}
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Search assignments"
+          placeholderTextColor="#888"
+          value={searchQuery}
+          onChangeText={text => setSearchQuery(text)}
+        />
+      </View>
+
+      {/* Assignments */}
+      <View style={styles.container1}>
+        {filteredAssignments.length === 0 && searchQuery !== '' ? (
+          <Text style={styles.noResultsText}>No results found</Text>
+        ) : (
+          filteredAssignments.map((assignment, index) => (
+            <View key={index} style={styles.container2}>
               <View style={styles.textContainer}>
-                <Text style={styles.Text1}>Math Assignment 2</Text>
-                <Text style={styles.Text2}>Due: Tomorrow 2PM</Text>
+                <Text style={styles.Text1}>{assignment.title}</Text>
+                <Text style={styles.Text2}>Due: {assignment.due}</Text>
               </View>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>In Progress</Text>
-              </View>
-          </View>
-          </View>
-          <View style={styles.container3}>
-                <View style={styles.container4}>
-                    <Text style={[styles.ques,{fontWeight:'600'}]}>Question 1</Text>
-                    <View style={styles.tagcontainer}>
-                        <Text style={styles.tag}>Calculus</Text>
-                    </View>
-                </View>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Statistics:</Text>
-                <Text style={styles.res}> 90% of students got it right </Text>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Analysis:</Text>
-                <Text style={styles.res}> Students are generally able to solve this problem  </Text>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Questionnaire feedback:</Text>
-                <Text style={styles.res}> "I think this is straightforward" - Paul, Class A </Text>
-                </View>
-                <View style={styles.container3}>
-                <View style={styles.container4}>
-                    <Text style={[styles.ques,{fontWeight:'600'}]}>Question 2</Text>
-                    <View style={styles.tagcontainer}>
-                        <Text style={styles.tag}>Calculus</Text>
-                    </View>
-                </View>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Statistics:</Text>
-                <Text style={styles.res}> 70% of students got it right </Text>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Analysis:</Text>
-                <Text style={styles.res}> Students are generally able to solve this problem, the ones that got it wrong were careless and forgot to check for other possible answers  </Text>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Questionnaire feedback:</Text>
-                <Text style={styles.res}> "This question is tricky but managable" - Chris, Class B </Text>
-                <Text style={styles.res}> "Please go through this in class" - Melody, Class A </Text>
-                </View>
-                <View style={styles.container3}>
-                <View style={styles.container4}>
-                    <Text style={[styles.ques,{fontWeight:'600'}]}>Question 3</Text>
-                    <View style={styles.tagcontainer}>
-                        <Text style={styles.tag}>Calculus</Text>
-                    </View>
-                    <View style={styles.tagcontainer1}>
-                        <Text style={styles.tag1}>Hardest</Text>
-                    </View>
-                </View>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Statistics:</Text>
-                <Text style={styles.res}> 30% of students got it right </Text>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Analysis:</Text>
-                <Text style={styles.res}> Students are generally unable to solve this question. The question has multiple parts and require the knowledge of various concepts regarding calculus like derivatives, second derivatives and integration. More time should be spent eexplaining these concepts.  </Text>
-                <Text style={[styles.res,{fontWeight:'600'}]}>Questionnaire feedback:</Text>
-                <Text style={styles.res}> "I don't understand this question" - Darren, Class B </Text>
-                <Text style={styles.res}> "Why is the answer 2X and not 5X?" - Jason, Class A </Text>
-                </View>
-      </ScrollView>
+              <TouchableOpacity
+                style={[
+                    styles.button,
+                    { backgroundColor: statusColors[assignment.status] || '#FFFFFF' }, 
+                  ]}
+                onPress={() => {
+                  if (assignment.title === 'Math Assignment 1') {
+                    router.push('/assreport'); 
+                  }
+                }}
+              >
+                <Text style={styles.buttonText}>{assignment.status}</Text>
+              </TouchableOpacity>
+            </View>
+          ))
+        )}
+      </View>
+
       {/* Bottom Navigation */}
       <View style={styles.bottomNavigation}>
-        <TouchableOpacity style={styles.navItem}onPress={() => router.push('/home')}>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/home')}>
           <Ionicons name="cube-outline" size={24} color="#8D8DA6" />
           <Text style={[styles.navText, { color: "#8D8DA6" }]}>Dashboard</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/questionnaire')}>
           <Ionicons name="document-text" size={24} color="#8D8DA6" />
-          <Text style={styles.navText}>Questionnaire</Text>
+          <Text style={[styles.navText, { color: "#8D8DA6" }]}>Questionnaire</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
           <Ionicons name="clipboard-outline" size={24} color="#0300A2" />
@@ -99,46 +92,6 @@ export default function Dashboard({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      modalContent: {
-        width: '80%',
-        padding: 20,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        alignItems: 'center',
-      },
-      modalTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 15,
-      },
-      filterOption: {
-        padding: 10,
-        width: '100%',
-        alignItems: 'center',
-        borderBottomColor: '#ddd',
-        borderBottomWidth: 1,
-      },
-      filterText: {
-        fontSize: 16,
-        color: '#060527',
-      },
-      closeButton: {
-        marginTop: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        backgroundColor: '#060527',
-        borderRadius: 5,
-      },
-      closeButtonText: {
-        color: '#fff',
-        fontSize: 16,
-      },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -146,31 +99,31 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#0A0932', // Blue border color
+    justifyContent: 'space-between',
+    borderColor: '#0300A2',
     borderWidth: 2,
     borderRadius: 25,
-    paddingVertical: 15,
+    paddingVertical: 10,
     paddingHorizontal: 15,
     marginHorizontal: '5%',
-    marginTop: '35%', 
-    marginLeft:'0%'
+    marginTop: '40%', 
+    marginLeft: '5%',
+    minHeight: 50, // Add a minimum height to prevent shrinking
   },
   inputText: {
     fontSize: 16,
     fontWeight: '300',
-    marginLeft:'4%'
-
+    width: '100%',
+    color: '#000', // Ensure text is visible
   },
-
-  
   titleContainer: {
     justifyContent: 'center',
     alignItems: 'flex-start',
     paddingVertical: 20,
     paddingTop: 10,
     paddingHorizontal: 30,
-    backgroundColor: '#FFF',  // White background for the box
-    borderRadius: 15,         // Rounded corners
+    backgroundColor: '#FFF',
+    borderRadius: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -179,83 +132,76 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: 118,
-    zIndex: 1,               // Ensures it stays above other content
+    zIndex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 30,
   },
-  content:{
-    marginLeft:'3%',
+  content: {
+    marginLeft: '3%',
     flexDirection: 'column',
   },  
   titleTextContainer: {
-    flexDirection: 'column',  // Stack titleText and titleText2
+    flexDirection: 'column',
     justifyContent: 'left',
-    marginLeft:'-35%',
+    marginLeft: '-35%',
   },
   titleText: {
     fontSize: 14,
     fontFamily: 'Roboto',
-    fontWeight: '200',  
+    fontWeight: '200',
     color: '#7C7C7C',
     paddingTop: '12%',
   },
-  titleText4: {
+  titleText2: {
     fontSize: 16,
     fontFamily: 'Roboto',
-    fontWeight: '500', 
+    fontWeight: '500',
     color: '#060527',
-    marginLeft: '5%',
-    paddingTop:30,    
+    paddingTop: 3,    
   },
-
-  scrollViewContent:{
-    paddingBottom: 120,
-
-  },
-  container1:{
+  container1: {
     paddingTop: '5%',
-    marginLeft: '2%' ,
-    flexDirection: 'column', 
-    marginBottom:'-30%',
-    
+    marginLeft: '5%' ,
+    flexDirection: 'column',
+    marginBottom: '-30%',
   },
-  container2:{
+  container2: {
     borderRadius: 35,
-    backgroundColor:'#0A0932',
+    backgroundColor: '#193F7B',
     width: '90%',
-    paddingVertical: '10%', // Adjust the padding for better spacing
-    marginTop:13,
-    flexDirection: 'row',  // Change to row to align text and button horizontally
+    paddingVertical: '10%',
+    marginTop: 13,
+    flexDirection: 'row',
     alignItems: 'flex-start',
     paddingLeft: 20,
-    justifyContent: 'space-between', // Ensure text and button are spaced apart
+    justifyContent: 'space-between',
   },
   textContainer: {
-    flexDirection: 'column',  // Stack the texts vertically
+    flexDirection: 'column',
   },
-  Text1:{
+  Text1: {
     fontSize: 20,
-    fontStyle:'normal',
+    fontStyle: 'normal',
     fontFamily: 'Roboto',
     color: '#FFFFFF',
-    fontWeight: '700', 
+    fontWeight: '700',
   },
-  Text2:{
+  Text2: {
     fontSize: 15,
-    fontStyle:'normal',
+    fontStyle: 'normal',
     fontFamily: 'Roboto',
     color: '#8D8DA6',
   },
   button: {
-    zIndex: 10, 
+    zIndex: 10,
     backgroundColor: '#FFFFFF',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
     marginLeft: 'auto',
-    marginRight:'5%', 
-    alignSelf: 'flex-start', // Ensure the button stays aligned to the right of its container
+    marginRight: '5%',
+    alignSelf: 'flex-start',
   },
   buttonText: {
     color: '#000000',
@@ -266,13 +212,18 @@ const styles = StyleSheet.create({
   bellIcon: {
     marginLeft: 'auto',
     paddingTop: '15%',
-    marginRight:'10%',
+    marginRight: '10%',
   },
-  personIcon:{
+  personIcon: {
     marginRight: 'auto',
     paddingTop: '12%',
   },
-
+  noResultsText: {
+    fontSize: 16,
+    color: '#FF0000',
+    textAlign: 'center',
+    marginTop: 20,
+  },
   bottomNavigation: {
     position: 'absolute',
     bottom: 0,
@@ -282,7 +233,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ffffff',
     paddingVertical: 20,
-    addingTop: 10,
     paddingHorizontal: 30,
     borderRadius: 30,
     shadowColor: '#000',
@@ -302,67 +252,5 @@ const styles = StyleSheet.create({
     color: '#8D8DA6',
     marginTop: 5,
     textAlign: 'center',
-  },
-  titleText3:{
-    fontSize: 20,
-    fontFamily: 'Poppins',
-    color: '#060527',
-    marginTop: 150,
-  },
-  container3: {
-    marginTop: '5%',
-    flexDirection: 'column',
-    marginLeft: '5%',
-  },
-  container4: {
-    flexDirection: 'row',
-  },
-  res: {
-    color: '#060527',
-    fontFamily: 'Roboto',
-    fontSize: 16,
-    fontWeight: '250',
-    marginTop: 5,
-    marginRight: 25,
-  },
-  link: {
-    fontSize: 16,
-    color: '#0000FF', 
-    textDecorationLine: 'underline',
-  },
-  ques: {
-    color: '#060527',
-    fontFamily: 'Roboto',
-    fontSize: 20,
-    fontWeight: '250',
-    marginTop: '2%',
-  },
-  tag: {
-    fontFamily: 'Roboto',
-    fontSize: 14,
-    fontWeight: '230',
-    color: '#ffffff',
-  },
-  tag1: {
-    fontFamily: 'Roboto',
-    fontSize: 14,
-    fontWeight: '230',
-    color: '#ffffff',
-  },
-  tagcontainer1: {
-    backgroundColor: '#FF0000',
-    borderRadius: 20,
-    marginLeft: '10%',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginTop: '2%',
-  },
-  tagcontainer: {
-    backgroundColor: '#4450A1',
-    borderRadius: 20,
-    marginLeft: '10%',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginTop: '2%',
   },
 });

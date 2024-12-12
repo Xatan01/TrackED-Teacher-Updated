@@ -16,7 +16,7 @@ export default function Dashboard({ navigation }) {
           <Text style={styles.titleText}>Welcome,</Text>
           <Text style={styles.titleText2}>Jane</Text>
         </View>
-        <Ionicons name="notifications-outline" size={24} color="#BF2D2D" style={styles.bellIcon} />
+        <Ionicons name="notifications-outline" size={24} color="#0300A2" style={styles.bellIcon} />
       </View>
       {/* Content */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollViewContent}>
@@ -39,10 +39,10 @@ export default function Dashboard({ navigation }) {
             <ScrollView horizontal contentContainerStyle={styles.classesContainer} showsHorizontalScrollIndicator={false}>
               <View style={styles.container3}>
                 <View style={styles.textContainer}>
-                  <Text style={styles.Text1}>English</Text>
-                  <Text style={styles.Text2}>Classroom 1</Text>
+                  <Text style={styles.Text1}>Math</Text>
+                  <Text style={styles.Text2}>Classroom 3</Text>
                 </View>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={[styles.button,{backgroundColor:'lightblue'}]}>
                   <Text style={styles.buttonText}>12PM-2PM</Text>
                 </TouchableOpacity>
               </View>
@@ -51,7 +51,7 @@ export default function Dashboard({ navigation }) {
                   <Text style={styles.Text1}>Math</Text>
                   <Text style={styles.Text2}>Classroom 1</Text>
                 </View>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={[styles.button,{backgroundColor:'lightblue'}]}>
                   <Text style={styles.buttonText}>2.05PM-4PM</Text>
                 </TouchableOpacity>
               </View>

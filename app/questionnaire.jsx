@@ -8,10 +8,15 @@ export default function Dashboard({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const assignments = [
+    { title: 'Math Assignment 1', due: '10/12/2024 2PM', status: 'Completed' },
     { title: 'Math Assignment 2', due: 'Tomorrow 2PM', status: 'In Progress' },
     { title: 'Math Assignment 3', due: '20/12/2024 2PM', status: 'Unreleased' },
-    { title: 'English Assignment 2', due: '11/11/2024 2PM', status: 'Completed' },
   ];
+  const statusColors = {
+    Completed: 'lightblue', 
+    'In Progress': 'white', 
+    Unreleased: '#f5f5dc', 
+  };
 
   const filteredAssignments = assignments.filter(assignment =>
     assignment.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -52,10 +57,19 @@ export default function Dashboard({ navigation }) {
                 <Text style={styles.Text2}>Due: {assignment.due}</Text>
               </View>
               <TouchableOpacity
-                style={styles.button}
+                          style={[
+                            styles.button,
+                            { backgroundColor: statusColors[assignment.status] || '#FFFFFF' }, // Default to white if no match
+                          ]}
                 onPress={() => {
                   if (assignment.title === 'Math Assignment 3') {
                     router.push('/math'); // Navigate to Biology Assignment page
+                  }
+                  if(assignment.title === 'Math Assignment 1') {
+                    router.push('/assreport'); // Navigate to Biology Assignment page
+                  }
+                  if(assignment.title === 'Math Assignment 2') {
+                    router.push('/assignment'); // Navigate to Biology Assignment page
                   }
                 }}
               >
