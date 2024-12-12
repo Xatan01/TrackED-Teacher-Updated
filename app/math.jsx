@@ -1,130 +1,130 @@
-    import React, { useState } from 'react';
-    import { View, Text, StyleSheet, TextInput, TouchableOpacity, Switch } from 'react-native';
-    import Slider from '@react-native-community/slider';
-    import { Ionicons } from '@expo/vector-icons';
-    import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Switch, ScrollView } from 'react-native';
+import Slider from '@react-native-community/slider';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
-    export default function Dashboard() {
-    const router = useRouter();
-    const [searchQuery, setSearchQuery] = useState('');
-    const [questions, setQuestions] = useState([
-        { id: 1, text: "Did you get the correct answer?", type: 'scale', scale: 3, editable: false },
-        { id: 2, text: "Was the question too hard?", type: 'scale', scale: 2, editable: false },
-        { id: 3, text: "Did the examples help?", type: 'scale', scale: 4, editable: false },
-        { id: 4, text: "Explain how you solved question 3?", type: 'text', value: '', editable: false },
-    ]);
+export default function Dashboard() {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [questions, setQuestions] = useState([
+    { id: 1, text: "Did you get the correct answer?", type: 'scale', scale: 3, editable: false },
+    { id: 2, text: "Was the question too hard?", type: 'scale', scale: 2, editable: false },
+    { id: 3, text: "Did the examples help?", type: 'scale', scale: 4, editable: false },
+    { id: 4, text: "Explain how you solved question 3?", type: 'text', value: '', editable: false },
+  ]);
 
-    const assignments = [
-        { title: 'Math Assignment 3', due: '20/12/2024 2PM', status: 'Unreleased' },
-    ];
+  const assignments = [
+    { title: 'Math Assignment 3', due: '20/12/2024 2PM', status: 'Unreleased' },
+  ];
 
-    const filteredAssignments = assignments.filter(assignment =>
-        assignment.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredAssignments = assignments.filter(assignment =>
+    assignment.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const toggleEditMode = (id) => {
+    setQuestions((prev) =>
+      prev.map((q) =>
+        q.id === id ? { ...q, editable: !q.editable } : { ...q, editable: false }
+      )
     );
+  };
 
-    const toggleEditMode = (id) => {
-        setQuestions((prev) =>
-        prev.map((q) =>
-            q.id === id ? { ...q, editable: !q.editable } : { ...q, editable: false }
-        )
-        );
-    };
+  const handleTextChange = (id, value) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, text: value } : q))
+    );
+  };
 
-    const handleTextChange = (id, value) => {
-        setQuestions((prev) =>
-        prev.map((q) => (q.id === id ? { ...q, text: value } : q))
-        );
-    };
+  const handleTypeChange = (id) => {
+    setQuestions((prev) =>
+      prev.map((q) =>
+        q.id === id
+          ? { ...q, type: q.type === 'scale' ? 'text' : 'scale', editable: false }
+          : q
+      )
+    );
+  };
 
-    const handleTypeChange = (id) => {
-        setQuestions((prev) =>
-        prev.map((q) =>
-            q.id === id
-            ? { ...q, type: q.type === 'scale' ? 'text' : 'scale', editable: false }
-            : q
-        )
-        );
-    };
+  const handleScaleChange = (id, value) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, scale: value } : q))
+    );
+  };
 
-    const handleScaleChange = (id, value) => {
-        setQuestions((prev) =>
-        prev.map((q) => (q.id === id ? { ...q, scale: value } : q))
-        );
-    };
+  const handleOpenEndedChange = (id, value) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, value: value } : q))
+    );
+  };
 
-    const handleOpenEndedChange = (id, value) => {
-        setQuestions((prev) =>
-        prev.map((q) => (q.id === id ? { ...q, value: value } : q))
-        );
-    };
-
-    return (
-        <View style={styles.container}>
-        {/* Top panel */}
-        <View style={styles.titleContainer}>
-            <Ionicons name="person-circle-outline" size={50} color="#153B78" style={styles.personIcon} />
-            <View style={styles.titleTextContainer}>
-            <Text style={styles.titleText}>Welcome,</Text>
-            <Text style={styles.titleText2}>Jane</Text>
-            </View>
-            <Ionicons name="notifications-outline" size={24} color="#153B78" style={styles.bellIcon} />
+  return (
+    <View style={styles.container}>
+      {/* Top panel */}
+      <View style={styles.titleContainer}>
+        <Ionicons name="person-circle-outline" size={50} color="#153B78" style={styles.personIcon} />
+        <View style={styles.titleTextContainer}>
+          <Text style={styles.titleText}>Welcome,</Text>
+          <Text style={styles.titleText2}>Jane</Text>
         </View>
+        <Ionicons name="notifications-outline" size={24} color="#153B78" style={styles.bellIcon} />
+      </View>
 
-        {/* Search bar */}
-        
+      {/* Scrollable content */}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.headerText}>Current Questionnaire</Text>
 
         {/* Assignments */}
         <View style={styles.container1}>
-            {filteredAssignments.map((assignment, index) => (
+          {filteredAssignments.map((assignment, index) => (
             <View key={index} style={styles.container2}>
-                <View style={styles.textContainer}>
+              <View style={styles.textContainer}>
                 <Text style={styles.Text1}>{assignment.title}</Text>
                 <Text style={styles.Text2}>Due: {assignment.due}</Text>
-                </View>
-                <TouchableOpacity style={styles.button}>
+              </View>
+              <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>{assignment.status}</Text>
-                </TouchableOpacity>
+              </TouchableOpacity>
             </View>
-            ))}
+          ))}
         </View>
 
         {/* Questionnaire Section */}
         <View style={styles.questionnaireContainer}>
-            {questions.map((q) => (
+          {questions.map((q) => (
             <View key={q.id} style={styles.questionContainer}>
-                <View style={styles.questionHeader}>
+              <View style={styles.questionHeader}>
                 {q.editable ? (
-                    <TextInput
+                  <TextInput
                     style={styles.textInput}
                     value={q.text}
                     onChangeText={(value) => handleTextChange(q.id, value)}
-                    />
+                  />
                 ) : (
-                    <Text style={styles.questionText}>{q.text}</Text>
+                  <Text style={styles.questionText}>{q.text}</Text>
                 )}
                 <TouchableOpacity onPress={() => toggleEditMode(q.id)}>
-                    <Ionicons
+                  <Ionicons
                     name={q.editable ? 'checkmark-outline' : 'pencil-outline'}
                     size={20}
                     color="#153B78"
-                    />
+                  />
                 </TouchableOpacity>
-                </View>
-                {q.editable && (
+              </View>
+              {q.editable && (
                 <View style={styles.toggleContainer}>
-                    <Text>Likert Scale</Text>
-                    <Switch
+                  <Text>Likert Scale</Text>
+                  <Switch
                     value={q.type === 'scale'}
                     onValueChange={() => handleTypeChange(q.id)}
-                    />
-                    <Text>Open-Ended</Text>
+                  />
+                  <Text>Open-Ended</Text>
                 </View>
-                )}
-                {q.type === 'scale' ? (
+              )}
+              {q.type === 'scale' ? (
                 <View style={styles.scaleContainer}>
-                    <Text>😔</Text>
-                    <Slider
+                  <Text>😔</Text>
+                  <Slider
                     style={styles.slider}
                     minimumValue={1}
                     maximumValue={5}
@@ -134,53 +134,66 @@
                     minimumTrackTintColor="#193F7B"
                     maximumTrackTintColor="#d3d3d3"
                     thumbTintColor="#193F7B"
-                    />
-                    <Text>😊</Text>
+                  />
+                  <Text>😊</Text>
                 </View>
-                ) : (
+              ) : (
                 <TextInput
-                    style={styles.textInput}
-                    placeholder="Type your answer here..."
-                    value={q.value}
-                    onChangeText={(value) => handleOpenEndedChange(q.id, value)}
+                  style={styles.textInput}
+                  placeholder="Type your answer here..."
+                  value={q.value}
+                  onChangeText={(value) => handleOpenEndedChange(q.id, value)}
                 />
-                )}
+              )}
+              {q.type === 'text' && (
+                <TextInput
+                  style={styles.openEndedInput}
+                  placeholder="Type your answer here..."
+                  multiline={true}
+                  value={q.value}
+                  onChangeText={(value) => handleOpenEndedChange(q.id, value)}
+                />
+              )}
             </View>
-            ))}
+          ))}
 
-            <TouchableOpacity style={styles.confirmButton}>
-            <Text style={styles.confirmButtonText}>Submit Questionnaire</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.confirmButton}onPress={() => router.push('/questionnaire')}>
+            <Text style={styles.confirmButtonText}>Confirmed Changes</Text>
+          </TouchableOpacity>
         </View>
+      </ScrollView>
 
-        {/* Bottom Navigation */}
-        <View style={styles.bottomNavigation}>
-            <TouchableOpacity style={styles.navItem} onPress={() => router.push('/home')}>
-            <Ionicons name="cube-outline" size={24} color="#8D8DA6" />
-            <Text style={[styles.navText, { color: "#8D8DA6" }]}>Dashboard</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.navItem} onPress={() => router.push('/questionnaire')}>
-            <Ionicons name="document-text" size={24} color="#0300A2" />
-            <Text style={[styles.navText, { color: "#0300A2" }]}>Questionnaire</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.navItem} onPress={() => router.push('/manage')}>
-            <Ionicons name="people-outline" size={24} color="#8D8DA6" />
-            <Text style={styles.navText}>Manage</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
-            <Ionicons name="clipboard-outline" size={24} color="#8D8DA6" />
-            <Text style={styles.navText}>Report</Text>
-            </TouchableOpacity>
-        </View>
-        </View>
-    );
-    }
+      {/* Bottom Navigation */}
+      <View style={styles.bottomNavigation}>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/home')}>
+          <Ionicons name="cube-outline" size={24} color="#8D8DA6" />
+          <Text style={[styles.navText, { color: "#8D8DA6" }]}>Dashboard</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/questionnaire')}>
+          <Ionicons name="document-text" size={24} color="#0300A2" />
+          <Text style={[styles.navText, { color: "#0300A2" }]}>Questionnaire</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/manage')}>
+          <Ionicons name="people-outline" size={24} color="#8D8DA6" />
+          <Text style={styles.navText}>Manage</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => router.push('/report')}>
+          <Ionicons name="clipboard-outline" size={24} color="#8D8DA6" />
+          <Text style={styles.navText}>Report</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
 
-    const styles = StyleSheet.create({
-        container: {
-          flex: 1,
-          backgroundColor: '#FFFFFF',
-        },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  scrollContent: {
+    paddingBottom: 120, // Ensure content doesn't overlap with bottom navigation
+  },
         titleContainer: {
           justifyContent: 'center',
           alignItems: 'flex-start',
@@ -399,4 +412,15 @@
           marginTop: 5,
           textAlign: 'center',
         },
+        openEndedInput: {
+            borderWidth: 1,
+            borderColor: '#d3d3d3',
+            borderRadius: 10, // Added border radius to match other container styles
+            padding: 10, // Added padding for better text visibility
+            fontSize: 16,
+            color: '#153B78',
+            marginTop: 10, // Added margin top to separate from question header
+            minHeight: 100, // Increased height to make it more textarea-like
+            textAlignVertical: 'top', // Aligns text to the top for multiline input
+          },
       });
