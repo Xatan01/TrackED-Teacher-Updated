@@ -20,14 +20,14 @@
    npm install
    or
    pip install -r requirements.txt
-
-Usage
-Start the application:
+## Usage
+1. Start the application:
 npx expo start 
 or
 python app.py
 
-Access the interface through ExpoGo (Downloaded from the Google Play store or App store)
-Scan with the phone or emulator the QR code produced by running the repository
+2. Access the interface through ExpoGo (Downloaded from the Google Play store or App store)
+
+3. Scan with the phone or emulator the QR code produced by running the repository
 
 
