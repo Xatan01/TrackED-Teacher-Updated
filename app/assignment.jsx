@@ -5,32 +5,27 @@ import { useRouter } from 'expo-router';
 
 export default function Dashboard() {
   const router = useRouter();
+  const [expandedA, setExpandedA] = useState(null);
+  const [expandedB, setExpandedB] = useState(null);
 
   const assignments = [
     {
       title: 'Math Assignment 2',
       due: 'Tomorrow 2PM',
       status: 'In Progress',
-      details: [
-        'Class A',
-        '100% Submitted',
-        'Status: Reviewed',
-      ],
+      details: ['Class A', '100% Submitted', 'Status: Reviewed'],
       moreInfo: [
         'Class A Students: Ryan, Ben, Ruth, Emily, John \n',
         'Hardest questions: Q1, Q3 \n',
-        'Topics to cover: Calculus'
+        'Topics to cover: Calculus',
       ],
       moreInfoB: [
         'Class B Students: James, Sarah, Alex, Laura \n',
         'Hardest questions: Q2, Q4 \n',
-        'Topics to cover: Algebra'
-      ]
+        'Topics to cover: Algebra',
+      ],
     },
   ];
-
-  const [expandedA, setExpandedA] = useState(null);
-  const [expandedB, setExpandedB] = useState(null);
 
   const handleToggleExpandA = (index) => {
     setExpandedA(expandedA === index ? null : index);
@@ -89,7 +84,11 @@ export default function Dashboard() {
                     </Text>
                     {detailIndex === 0 && expandedA === index && (
                       <View style={styles.expandedContainerA}>
-                        <Text style={styles.expandedText}>{assignment.moreInfo}</Text>
+                        {assignment.moreInfo.map((info, infoIndex) => (
+                          <Text key={infoIndex} style={styles.expandedText}>
+                            {info}
+                          </Text>
+                        ))}
                       </View>
                     )}
                   </View>
@@ -105,9 +104,19 @@ export default function Dashboard() {
                     />
                   </TouchableOpacity>
                 </Text>
+                {/* Display status below Class B */}
+                {/* Display status below Class B */}
+              <Text style={[styles.detailText, styles.greyedText]}>100% Submitted</Text>
+              <Text style={styles.detailText}>Status: Reviewed</Text>
+
+
                 {expandedB === index && (
                   <View style={styles.expandedContainerB}>
-                    <Text style={styles.expandedText}>{assignment.moreInfoB}</Text>
+                    {assignment.moreInfoB.map((info, infoIndex) => (
+                      <Text key={infoIndex} style={styles.expandedText}>
+                        {info}
+                      </Text>
+                    ))}
                   </View>
                 )}
               </View>
