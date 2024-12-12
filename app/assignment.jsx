@@ -3,17 +3,45 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { useRouter } from 'expo-router';
 
-export default function Dashboard({ navigation }) {
-  const router = useRouter(); 
+export default function Dashboard() {
+  const router = useRouter();
 
-  // Sample data for assignments
   const assignments = [
-    { title: 'Math Assignment 2', due: 'Tomorrow 2PM', status: 'In Progress' },
+    {
+      title: 'Math Assignment 2',
+      due: 'Tomorrow 2PM',
+      status: 'In Progress',
+      details: [
+        'Class A',
+        '100% Submitted',
+        'Status: Reviewed',
+      ],
+      moreInfo: [
+        'Class A Students: Ryan, Ben, Ruth, Emily, John \n',
+        'Hardest questions: Q1, Q3 \n',
+        'Topics to cover: Calculus'
+      ],
+      moreInfoB: [
+        'Class B Students: James, Sarah, Alex, Laura \n',
+        'Hardest questions: Q2, Q4 \n',
+        'Topics to cover: Algebra'
+      ]
+    },
   ];
+
+  const [expandedA, setExpandedA] = useState(null);
+  const [expandedB, setExpandedB] = useState(null);
+
+  const handleToggleExpandA = (index) => {
+    setExpandedA(expandedA === index ? null : index);
+  };
+
+  const handleToggleExpandB = (index) => {
+    setExpandedB(expandedB === index ? null : index);
+  };
 
   return (
     <View style={styles.container}>
-      {/* Top panel with title container */}
       <View style={styles.titleContainer}>
         <Ionicons name="person-circle-outline" size={50} color="#153B78" style={styles.personIcon} />
         <View style={styles.titleTextContainer}>
@@ -23,26 +51,71 @@ export default function Dashboard({ navigation }) {
         <Ionicons name="notifications-outline" size={24} color="#153B78" style={styles.bellIcon} />
       </View>
 
-      {/* Content */}
       <View style={styles.content}>
         <Text style={styles.headerText}>Current Questionnaire</Text>
 
         <View style={styles.container1}>
           {assignments.map((assignment, index) => (
-            <View key={index} style={styles.container2}>
-              <View style={styles.textContainer}>
-                <Text style={styles.Text1}>{assignment.title}</Text>
-                <Text style={styles.Text2}>Due: {assignment.due}</Text> 
+            <View key={index} style={styles.assignmentContainer}>
+              <View style={styles.container2}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.Text1}>{assignment.title}</Text>
+                  <Text style={styles.Text2}>Due: {assignment.due}</Text>
+                </View>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>{assignment.status}</Text>
+                </View>
               </View>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>{assignment.status}</Text>
+              <View style={styles.detailsContainer}>
+                {assignment.details.map((detail, detailIndex) => (
+                  <View key={detailIndex}>
+                    <Text
+                      style={[
+                        styles.detailText,
+                        detailIndex === 0 ? styles.boldText : detailIndex === 1 ? styles.greyedText : null,
+                      ]}
+                    >
+                      {detail}
+                      {detailIndex === 0 && (
+                        <TouchableOpacity onPress={() => handleToggleExpandA(index)}>
+                          <Ionicons
+                            name={expandedA === index ? "chevron-up" : "chevron-down"}
+                            size={18}
+                            color="#153B78"
+                            style={styles.chevronIcon}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </Text>
+                    {detailIndex === 0 && expandedA === index && (
+                      <View style={styles.expandedContainerA}>
+                        <Text style={styles.expandedText}>{assignment.moreInfo}</Text>
+                      </View>
+                    )}
+                  </View>
+                ))}
+                <Text style={[styles.detailText, styles.boldText]}>
+                  Class B
+                  <TouchableOpacity onPress={() => handleToggleExpandB(index)}>
+                    <Ionicons
+                      name={expandedB === index ? "chevron-up" : "chevron-down"}
+                      size={18}
+                      color="#153B78"
+                      style={styles.chevronIcon}
+                    />
+                  </TouchableOpacity>
+                </Text>
+                {expandedB === index && (
+                  <View style={styles.expandedContainerB}>
+                    <Text style={styles.expandedText}>{assignment.moreInfoB}</Text>
+                  </View>
+                )}
               </View>
             </View>
           ))}
         </View>
       </View>
 
-      {/* Bottom Navigation */}
       <View style={styles.bottomNavigation}>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/home')}>
           <Ionicons name="cube-outline" size={24} color="#8D8DA6" />
@@ -82,7 +155,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    elevation: 10,      
+    elevation: 10,
     position: 'absolute',
     width: '100%',
     height: 118,
@@ -94,7 +167,7 @@ const styles = StyleSheet.create({
   content: {
     marginLeft: '3%',
     flexDirection: 'column',
-  },  
+  },
   titleTextContainer: {
     flexDirection: 'column',
     justifyContent: 'left',
@@ -112,10 +185,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontWeight: '500',
     color: '#060527',
-    paddingTop: 3,    
+    paddingTop: 3,
   },
   headerText: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: '700',
     color: '#000',
     marginLeft: '5%',
@@ -123,16 +196,18 @@ const styles = StyleSheet.create({
   },
   container1: {
     paddingTop: '5%',
-    marginLeft: '2%' ,
+    marginLeft: '2%',
     flexDirection: 'column',
     marginBottom: '-30%',
+  },
+  assignmentContainer: {
+    marginBottom: 20,
   },
   container2: {
     borderRadius: 35,
     backgroundColor: '#193F7B',
     width: '90%',
     paddingVertical: '10%',
-    marginTop: 13,
     flexDirection: 'row',
     alignItems: 'flex-start',
     paddingLeft: 20,
@@ -152,6 +227,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontStyle: 'normal',
     fontFamily: 'Roboto',
+    color: '#8D8DA6',
+  },
+  detailsContainer: {
+    marginTop: 10,
+    marginLeft: '5%',
+  },
+  detailText: {
+    fontSize: 16,
+    fontStyle: 'normal',
+    fontFamily: 'Roboto',
+    color: '#000000',
+    marginTop: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  boldText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  greyedText: {
     color: '#8D8DA6',
   },
   button: {
@@ -206,6 +301,45 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     color: '#8D8DA6',
     marginTop: 5,
+    textAlign: 'center',
+  },
+  chevronIcon: {
+    marginLeft: 240,
+  },
+  expandedContainerA: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: '#193F7B',
+    borderRadius: 10,
+    marginTop: 10,
+    padding: 10,
+    width: '90%',
+  },
+  expandedContainerB: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: '#193F7B',
+    borderRadius: 10,
+    marginTop: 10,
+    padding: 10,
+    width: '90%',
+  },
+  expandedText: {
+    fontSize: 14,
+    color: '#000',
+  },
+  tagcontainer: {
+    backgroundColor: '#4450A1',
+    borderRadius: 20,
+    marginLeft: '10%',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginTop: 5,
+  },
+  tagtext: {
+    color: '#FFF',
+    fontSize: 12,
+    fontWeight: '600',
     textAlign: 'center',
   },
 });

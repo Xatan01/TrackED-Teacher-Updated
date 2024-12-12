@@ -1,30 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, Image, ScrollView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { useRouter } from 'expo-router';
 
 export default function Dashboard({ navigation }) {
-  const router = useRouter(); 
-  const [modalVisible, setModalVisible] = useState(false);
-  
-  // State to handle the search query
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Sample data for assignments
   const assignments = [
     { title: 'Math Assignment 2', due: 'Tomorrow 2PM', status: 'In Progress' },
-    { title: 'Biology Assignment 4', due: '10/11/2024 2PM', status: 'Incomplete' },
+    { title: 'Math Assignment 3', due: '20/12/2024 2PM', status: 'Unreleased' },
     { title: 'English Assignment 2', due: '11/11/2024 2PM', status: 'Completed' },
   ];
 
-  // Filter assignments based on search query
   const filteredAssignments = assignments.filter(assignment =>
     assignment.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <View style={styles.container}>
-      {/* Top panel with title container */}
+      {/* Top panel */}
       <View style={styles.titleContainer}>
         <Ionicons name="person-circle-outline" size={50} color="#153B78" style={styles.personIcon} />
         <View style={styles.titleTextContainer}>
@@ -34,38 +29,41 @@ export default function Dashboard({ navigation }) {
         <Ionicons name="notifications-outline" size={24} color="#153B78" style={styles.bellIcon} />
       </View>
 
-      {/* Content */}
-      <View style={styles.content}>
+      {/* Search bar */}
       <View style={styles.inputContainer}>
-  <TextInput
-    style={styles.inputText}
-    placeholder="Search assignments"
-    placeholderTextColor="#888" // Optional: make placeholder more visible
-    value={searchQuery}
-    onChangeText={text => setSearchQuery(text)}
-    returnKeyType="search"
-    autoCorrect={false}
-    autoCapitalize="none"
-  />
-</View>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Search assignments"
+          placeholderTextColor="#888"
+          value={searchQuery}
+          onChangeText={text => setSearchQuery(text)}
+        />
+      </View>
 
-        <View style={styles.container1}>
-          {filteredAssignments.length === 0 && searchQuery !== '' ? (
-            <Text style={styles.noResultsText}>No results found</Text>
-          ) : (
-            filteredAssignments.map((assignment, index) => (
-              <View key={index} style={styles.container2}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.Text1}>{assignment.title}</Text>
-                  <Text style={styles.Text2}>Due: {assignment.due}</Text> 
-                </View>
-                <View style={styles.button}>
-                  <Text style={styles.buttonText}>{assignment.status}</Text>
-                </View>
+      {/* Assignments */}
+      <View style={styles.container1}>
+        {filteredAssignments.length === 0 && searchQuery !== '' ? (
+          <Text style={styles.noResultsText}>No results found</Text>
+        ) : (
+          filteredAssignments.map((assignment, index) => (
+            <View key={index} style={styles.container2}>
+              <View style={styles.textContainer}>
+                <Text style={styles.Text1}>{assignment.title}</Text>
+                <Text style={styles.Text2}>Due: {assignment.due}</Text>
               </View>
-            ))
-          )}
-        </View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  if (assignment.title === 'Math Assignment 3') {
+                    router.push('/math'); // Navigate to Biology Assignment page
+                  }
+                }}
+              >
+                <Text style={styles.buttonText}>{assignment.status}</Text>
+              </TouchableOpacity>
+            </View>
+          ))
+        )}
       </View>
 
       {/* Bottom Navigation */}
